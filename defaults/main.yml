@@ -1,0 +1,5 @@
+---
+
+ubuntu_mirror_releases_source: "rsync.releases.ubuntu.com::releases/"
+ubuntu_mirror_packages_source: "archive.ubuntu.com::ubuntu/"
+ubuntu_mirror_cron_disabled: true
