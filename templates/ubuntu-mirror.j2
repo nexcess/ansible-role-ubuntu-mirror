@@ -1,0 +1,61 @@
+#!/bin/bash
+# https://wiki.ubuntu.com/Mirrors
+# https://wiki.ubuntu.com/Mirrors/Scripts
+
+LOCKFILE=/tmp/ubuntu-mirror.lock
+
+if [[ ! -e $LOCKFILE ]]; then
+    touch $LOCKFILE
+
+    # two stage rsync for ubuntu-releases
+    rsync -aviH                 \
+          --human-readable      \
+          --progress            \
+          --safe-links          \
+          --exclude "Packages*" \
+          --exclude "Sources*"  \
+          --exclude '.~tmp~'    \
+          --stats               \
+         {{ ubuntu_mirror_releases_source }} {{ mirror_doc_root }}/ubuntu-releases/
+
+    rsync -aviH                 \
+          --human-readable      \
+          --progress            \
+          --safe-links          \
+          --delete              \
+          --delete-after        \
+          --stats               \
+         {{ ubuntu_mirror_releases_source }} {{ mirror_doc_root }}/ubuntu-releases/
+
+    # two stage rsync for ubuntu packages
+    rsync -aviH                 \
+          --human-readable      \
+          --progress            \
+          --safe-links          \
+          --exclude "Packages*" \
+          --exclude "Sources*"  \
+          --exclude '.~tmp~'    \
+          --stats               \
+         {{ ubuntu_mirror_packages_source }} {{ mirror_doc_root }}/ubuntu/
+
+    rsync -aviH                 \
+          --human-readable      \
+          --progress            \
+          --safe-links          \
+          --delete              \
+          --delete-after        \
+          --stats               \
+         {{ ubuntu_mirror_packages_source }} {{ mirror_doc_root }}/ubuntu/
+
+    rm $LOCKFILE
+else
+    cat <<EOF 1>&2
+ERROR: Another rsync is already running and has the lock file
+$LOCKFILE.
+
+This might be normal if there is a bug update coming
+through. The rsync might take several hours and the lock file has
+correctly prevented two rsyncs from happening at the same time.
+EOF
+
+fi
