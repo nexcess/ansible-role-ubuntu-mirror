@@ -18,6 +18,10 @@ if [[ ! -e $LOCKFILE ]]; then
           --stats               \
          {{ ubuntu_mirror_releases_source }} {{ mirror_doc_root }}/ubuntu-releases/
 
+    if [[ $? -eq 0 ]]; then
+        echo `date +%s` > {{ mirror_timestamp_dir }}/ubuntu-releases
+    fi
+
     rsync -aviH                 \
           --human-readable      \
           --progress            \
@@ -37,6 +41,10 @@ if [[ ! -e $LOCKFILE ]]; then
           --exclude '.~tmp~'    \
           --stats               \
          {{ ubuntu_mirror_packages_source }} {{ mirror_doc_root }}/ubuntu/
+
+    if [[ $? -eq 0 ]]; then
+        echo `date +%s` > {{ mirror_timestamp_dir }}/ubuntu
+    fi
 
     rsync -aviH                 \
           --human-readable      \
