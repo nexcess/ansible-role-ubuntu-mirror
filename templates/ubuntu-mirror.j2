@@ -16,6 +16,7 @@ if [[ ! -e $LOCKFILE ]]; then
           --exclude "Sources*"  \
           --exclude '.~tmp~'    \
           --stats               \
+          --timeout=10800       \
          {{ ubuntu_mirror_releases_source }} {{ mirror_doc_root }}/ubuntu-releases/
 
     if [[ $? -eq 0 ]]; then
@@ -29,6 +30,7 @@ if [[ ! -e $LOCKFILE ]]; then
           --delete              \
           --delete-after        \
           --stats               \
+          --timeout=10800       \
          {{ ubuntu_mirror_releases_source }} {{ mirror_doc_root }}/ubuntu-releases/
 
     # two stage rsync for ubuntu packages
@@ -40,6 +42,7 @@ if [[ ! -e $LOCKFILE ]]; then
           --exclude "Sources*"  \
           --exclude '.~tmp~'    \
           --stats               \
+          --timeout=10800       \
          {{ ubuntu_mirror_packages_source }} {{ mirror_doc_root }}/ubuntu/
 
     if [[ $? -eq 0 ]]; then
@@ -53,6 +56,7 @@ if [[ ! -e $LOCKFILE ]]; then
           --delete              \
           --delete-after        \
           --stats               \
+          --timeout=10800       \
          {{ ubuntu_mirror_packages_source }} {{ mirror_doc_root }}/ubuntu/
 
     rm $LOCKFILE
