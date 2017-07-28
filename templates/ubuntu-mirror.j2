@@ -8,7 +8,7 @@ if [[ ! -e $LOCKFILE ]]; then
     touch $LOCKFILE
 
     # two stage rsync for ubuntu-releases
-    rsync -aviH                 \
+    timeout 1d rsync -aviH      \
           --human-readable      \
           --progress            \
           --safe-links          \
@@ -23,7 +23,7 @@ if [[ ! -e $LOCKFILE ]]; then
         echo `date +%s` > {{ mirror_timestamp_dir }}/ubuntu-releases
     fi
 
-    rsync -aviH                 \
+    timeout 1d rsync -aviH      \
           --human-readable      \
           --progress            \
           --safe-links          \
@@ -34,7 +34,7 @@ if [[ ! -e $LOCKFILE ]]; then
          {{ ubuntu_mirror_releases_source }} {{ mirror_doc_root }}/ubuntu-releases/
 
     # two stage rsync for ubuntu packages
-    rsync -aviH                 \
+    timeout 1d rsync -aviH      \
           --human-readable      \
           --progress            \
           --safe-links          \
@@ -49,7 +49,7 @@ if [[ ! -e $LOCKFILE ]]; then
         echo `date +%s` > {{ mirror_timestamp_dir }}/ubuntu
     fi
 
-    rsync -aviH                 \
+    timeout 1d rsync -aviH      \
           --human-readable      \
           --progress            \
           --safe-links          \
